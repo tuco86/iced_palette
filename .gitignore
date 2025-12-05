@@ -1,2 +1,5 @@
 /target/
 Cargo.lock
+
+# Local cargo config with path patches (not for CI)
+/.cargo/config.toml

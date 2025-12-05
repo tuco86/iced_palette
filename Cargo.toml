@@ -4,7 +4,8 @@ version = "0.1.0"
 edition = "2024"
 description = "A command palette widget for Iced applications with fuzzy search"
 license = "MIT"
+repository = "https://github.com/tuco86/iced_palette"
 
 [dependencies]
-iced = { path = "../iced", features = ["advanced"] }
-iced_widget = { path = "../iced/widget" }
+iced = { git = "https://github.com/iced-rs/iced.git", branch = "master", features = ["advanced"] }
+iced_widget = { git = "https://github.com/iced-rs/iced.git", branch = "master" }
