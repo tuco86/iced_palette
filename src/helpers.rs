@@ -342,16 +342,18 @@ fn render_highlighted_text<'a, Message: 'a>(
     };
 
     for &idx in indices {
+        // Skip indices that are out of bounds
+        if idx >= chars.len() {
+            continue;
+        }
         // Add non-highlighted segment before this match
         if idx > last_end {
             let segment: String = chars[last_end..idx].iter().collect();
             spans.push(Span::new(segment));
         }
         // Add highlighted character
-        if idx < chars.len() {
-            let ch: String = chars[idx..idx + 1].iter().collect();
-            spans.push(Span::new(ch).color(highlight_color));
-        }
+        let ch: String = chars[idx..idx + 1].iter().collect();
+        spans.push(Span::new(ch).color(highlight_color));
         last_end = idx + 1;
     }
 
