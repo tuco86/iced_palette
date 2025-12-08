@@ -7,5 +7,5 @@ license = "MIT"
 repository = "https://github.com/tuco86/iced_palette"
 
 [dependencies]
-iced = { git = "https://github.com/iced-rs/iced.git", branch = "master", features = ["advanced"] }
-iced_widget = { git = "https://github.com/iced-rs/iced.git", branch = "master" }
+iced = { version = "0.14", features = ["advanced"] }
+iced_widget = { version = "0.14" }
