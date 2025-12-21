@@ -339,7 +339,7 @@ impl<'a, Message: Clone + 'a> Palette<'a, Message> {
         &self,
         cmd: &Command<Message>,
         is_selected: bool,
-        _display_index: usize,
+        display_index: usize,
         match_result: &FuzzyMatch,
     ) -> Element<'a, Message> {
         let name = cmd.name.clone();
@@ -407,7 +407,12 @@ impl<'a, Message: Clone + 'a> Palette<'a, Message> {
             btn = btn.on_press((on_select)(cmd.id));
         }
 
-        btn.into()
+        // Wrap with mouse_area to emit navigation on hover (for preview-on-hover)
+        if let Some(ref on_navigate) = self.on_navigate {
+            mouse_area(btn).on_enter((on_navigate)(display_index)).into()
+        } else {
+            btn.into()
+        }
     }
 }
 

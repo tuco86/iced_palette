@@ -59,6 +59,7 @@ pub fn command_palette<'a, Message: Clone + 'a>(
     selected_index: usize,
     on_query_change: impl Fn(String) -> Message + 'a,
     on_select: impl Fn(usize) -> Message + 'a,
+    on_navigate: impl Fn(usize) -> Message + 'a,
     on_cancel: impl Fn() -> Message + Clone + 'a,
 ) -> Element<'a, Message> {
     command_palette_styled(
@@ -67,6 +68,7 @@ pub fn command_palette<'a, Message: Clone + 'a>(
         selected_index,
         on_query_change,
         on_select,
+        on_navigate,
         on_cancel,
         PaletteConfig::default(),
     )
@@ -79,6 +81,7 @@ pub fn command_palette_styled<'a, Message: Clone + 'a>(
     selected_index: usize,
     on_query_change: impl Fn(String) -> Message + 'a,
     on_select: impl Fn(usize) -> Message + 'a,
+    on_navigate: impl Fn(usize) -> Message + 'a,
     on_cancel: impl Fn() -> Message + Clone + 'a,
     config: PaletteConfig,
 ) -> Element<'a, Message> {
@@ -157,15 +160,18 @@ pub fn command_palette_styled<'a, Message: Clone + 'a>(
             };
 
             let on_select_msg = on_select(display_index);
+            let on_navigate_msg = on_navigate(display_index);
 
-            button(content)
+            let btn = button(content)
                 .on_press(on_select_msg)
                 .padding([6, 10])
                 .width(Length::Fill)
                 .style(move |theme: &Theme, status| {
                     item_button_style(theme, is_selected, status)
-                })
-                .into()
+                });
+
+            // Wrap with mouse_area to emit navigation on hover (for preview-on-hover)
+            mouse_area(btn).on_enter(on_navigate_msg).into()
         })
         .collect();
 
